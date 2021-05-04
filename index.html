@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<!--
+	Shine by TEMPLATE STOCK
+	templatestock.co @templatestock
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Kelompok ASIX</title>
+
+		
+		<!-- WEB FONTS -->
+		<link href='http://fonts.googleapis.com/css?family=Roboto:100,300,100italic,400,300italic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+		
+		<!-- BOOTSTRAP -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<!-- FONT AWESOME -->
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<!-- CUSTOM STYLING -->
+		<link href="css/styles.css" rel="stylesheet">
+		<!-- PRELOADER -->	
+		<link href="css/loader.css" rel="stylesheet">
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript">
+  
+			// Load the Visualization API and the corechart package.
+			google.charts.load('current', {'packages':['corechart']});
+		
+			// Set a callback to run when the Google Visualization API is loaded.
+			google.charts.setOnLoadCallback(drawChart);
+		
+			// Callback that creates and populates a data table,
+			// instantiates the pie chart, passes in the data and
+			// draws it.
+			function drawChart() {
+		
+			  var data = new google.visualization.DataTable();
+			  var request = new XMLHttpRequest();
+			  request.open("GET", "./final.json", false);
+			  request.send(null)
+			  var obj = JSON.parse(request.responseText);
+			  
+			  data.addColumn('string', 'Year');
+			  data.addColumn('number', 'Amount');
+			  var count = 0;
+			  for (const property in obj) {
+				  if(parseInt(obj[property].Tahun, 10) < 1970){
+					  count++;
+				  }
+			  }
+			  data.addRow(["<1970", count]);
+			  var i;
+			  for(i = 1970; i <= 2020; i++){
+				  var count = 0;
+				  for (const property in obj) {
+					  if(parseInt(obj[property].Tahun, 10) == i){
+						  count++;
+					  }
+				  }
+				  data.addRow([i.toString(), count]);
+			  }
+			  
+			  // Set chart options
+			  var options = {'title':'Top 100 Movies Released per Year',
+							 'titleTextStyle':{
+								 fontSize: 15
+							 },
+							 'legend':{'position':'none'},
+							 'width':500,
+							 'height':300,
+						   'animation':{
+							   'duration': 1000,
+							   'startup': true,
+							   'easing':'inAndOut'
+						   },
+						   'tooltip':{
+							   'trigger':'selection'
+						   }};
+		
+			  // Instantiate and draw our chart, passing in some options.
+			  var chart = new google.visualization.ColumnChart(document.getElementById('collumn_chart'));
+			  chart.draw(data, options);
+			}
+		  </script>
+		
+		<script type="text/javascript">
+		
+		  // Load the Visualization API and the corechart package.
+		  google.charts.load('current', {'packages':['corechart']});
+		
+		  // Set a callback to run when the Google Visualization API is loaded.
+		  google.charts.setOnLoadCallback(drawChart);
+		
+		  // Callback that creates and populates a data table,
+		  // instantiates the pie chart, passes in the data and
+		  // draws it.
+		  function drawChart() {
+		
+			var data = new google.visualization.DataTable();
+			var request = new XMLHttpRequest();
+			request.open("GET", "./final.json", false);
+			request.send(null)
+			var obj = JSON.parse(request.responseText);
+			
+			data.addColumn('string', 'Year');
+			data.addColumn('number', 'Amount');
+			var count = 0;
+			for (const property in obj) {
+				if(parseInt(obj[property].Tahun, 10) < 2000){
+					count++;
+				}
+			}
+			data.addRow(["<2000", count]);
+			var i;
+			for(i = 2000; i <= 2020; i++){
+				var count = 0;
+				for (const property in obj) {
+					if(parseInt(obj[property].Tahun, 10) == i){
+						count++;
+					}
+				}
+				data.addRow([i.toString(), count]);
+			}
+			
+			// Set chart options
+			var options = {'title':'Top 100 Movies Released per Year (by Percentage)',
+						   'titleTextStyle':{
+							  fontSize: 15
+						   },
+						   'width':500,
+						   'height':300,
+						   'tooltip':{
+							   'trigger':'selection'
+						   }};
+		
+			// Instantiate and draw our chart, passing in some options.
+			var chart = new google.visualization.PieChart(document.getElementById('pie_chart'));
+			chart.draw(data, options);
+		  }
+		</script>
+		
+		<script type="text/javascript">
+		
+		  // Load the Visualization API and the corechart package.
+		  google.charts.load('current', {'packages':['corechart']});
+		
+		  // Set a callback to run when the Google Visualization API is loaded.
+		  google.charts.setOnLoadCallback(drawChart);
+		
+		  // Callback that creates and populates a data table,
+		  // instantiates the pie chart, passes in the data and
+		  // draws it.
+		  function drawChart() {
+		
+			var data = new google.visualization.DataTable();
+			var request = new XMLHttpRequest();
+			request.open("GET", "./final.json", false);
+			request.send(null)
+			var obj = JSON.parse(request.responseText);
+			
+			data.addColumn('string', 'Rating');
+			data.addColumn('number', 'Amount');
+			var count_array = [0,0,0,0,0,0,0,0,0,0,0];
+			for (const property in obj) {
+				var rate = parseInt(obj[property].Rating, 10);
+				if(isNaN(rate)){
+				  count_array[0]++;
+				} else {
+				  count_array[rate]++;
+				}
+			}
+			data.addRows([
+				["10", count_array[10]],
+				["9.x", count_array[9]],
+				["8.x", count_array[8]],
+				["7.x", count_array[7]],
+				["6.x", count_array[6]],
+				["5.x", count_array[5]],
+				["4.x", count_array[4]],
+				["3.x", count_array[3]],
+				["2.x", count_array[2]],
+				["1.x", count_array[1]],
+				["Unrated", count_array[0]]
+			  ]);
+			
+			// Set chart options
+			var options = {'title':'Top 100 Movies Rating',
+						   'titleTextStyle':{
+							  fontSize: 15
+						   },
+						   'legend':{'position':'none'},
+						   'width':500,
+						   'height':300,
+						   'animation':{
+							   'duration': 1000,
+							   'startup': true,
+							   'easing':'inAndOut'
+						   },
+						   'tooltip':{
+							   'trigger':'selection'
+						   }};
+		
+			// Instantiate and draw our chart, passing in some options.
+			var chart = new google.visualization.BarChart(document.getElementById('bar_chart'));
+			chart.draw(data, options);
+		  }
+		</script>
+		
+		<script type="text/javascript">
+		
+		  // Load the Visualization API and the corechart package.
+		  google.charts.load('current', {'packages':['corechart']});
+		
+		  // Set a callback to run when the Google Visualization API is loaded.
+		  google.charts.setOnLoadCallback(drawChart);
+		
+		  // Callback that creates and populates a data table,
+		  // instantiates the pie chart, passes in the data and
+		  // draws it.
+		  function drawChart() {
+		
+			var data = new google.visualization.DataTable();
+			var request = new XMLHttpRequest();
+			request.open("GET", "./final.json", false);
+			request.send(null)
+			var obj = JSON.parse(request.responseText);
+			
+			data.addColumn('string', 'Rating');
+			data.addColumn('number', 'Amount');
+			var count_rate = [0,0,0,0,0,0];
+			var count_year = [0,0,0,0,0,0];
+		
+			//count film by year
+			for (const property in obj) {
+				var rate = parseFloat(obj[property].Rating, 10);
+				if(isNaN(rate)){
+					continue;
+				}
+				var year = parseInt(obj[property].Tahun, 10);
+				switch(year){
+					case 2022:
+					case 2021:
+					case 2020:
+					case 2019:
+					case 2018:
+						count_year[year-2017]++;
+						count_rate[year-2017] += rate;
+						break;
+					default:
+						count_year[0]++;
+						count_rate[0] += rate;
+						break;
+				}
+			}
+			data.addRows([
+				["<2018", count_rate[0]/count_year[0]],
+				["2018", count_rate[1]/count_year[1]],
+				["2019", count_rate[2]/count_year[2]],
+				["2020", count_rate[3]/count_year[3]],
+				["2021", count_rate[4]/count_year[4]],
+				["2022", count_rate[5]/count_year[5]]
+			  ]);
+		
+			// Set chart options
+			var options = {'title':'Top 100 Movies Rating Average per Year',
+						   'titleTextStyle':{
+							  fontSize: 15
+						   },
+						   'legend':{'position':'none'},
+						   'width':500,
+						   'height':300,
+						   'animation':{
+							   'duration': 1000,
+							   'startup': true,
+							   'easing':'inAndOut'
+						   },
+						   'tooltip':{
+							   'trigger':'selection'
+						   }};
+		
+			// Instantiate and draw our chart, passing in some options.
+			var chart = new google.visualization.LineChart(document.getElementById('line_chart'));
+			chart.draw(data, options);
+		  }
+		</script>	
+	</head>
+	
+<body>
+	<!-- PRELOADER -->
+		<div id="loader-wrapper">
+			<div id="loader"><div class="sk-spinner sk-spinner-cube-grid"><div class="sk-cube"></div><div class="sk-cube"></div><div class="sk-cube"></div><div class="sk-cube"></div><div class="sk-cube"></div><div class="sk-cube"></div><div class="sk-cube"></div><div class="sk-cube"></div><div class="sk-cube"></div></div></div>
+		</div>	
+		
+	<!-- HEADER -->
+		<section id="header">
+			<div class="container">
+				<div class="row text-center">
+					<div class="col-md-8">
+						<img class="logo" src="images/logo.png" />
+						<h1 class="white-text">Welcome To WebScrapping Selenium</h1>
+						<h5 class="white-text">Menjadikan Dunia ditangan Kita.</h5>
+						<div id="countdown" class="white-text"></div>
+					</div>
+				</div>
+			</div>
+			<div class="animation">
+			<a class="arrow-down-animation" data-scroll href="#about"><i class="fa fa-angle-down"></i></a>
+			</div>
+		</section>
+	<!-- HEADER ENDS -->
+	
+	<!-- ABOUT -->
+		<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script type ="text/javascript">
+        $(function(){
+
+            //mengambil data dari file headline.txt
+            $.get('final.json',function(obj){
+                var str = "<table border='1' cellspacing='0' cellpadding='6' align='center'>";
+					str+= "<tr align='center' bgcolor='#63b3ed'><td>No</td><td>Gambar</td><td>Judul</td><td>Tahun</td><td>Rating</td><td>Waktu Scraping</td></tr>";
+                //looping data headline -
+                $.each(obj,function(n,data){
+                    
+                    //isi tabel
+                    str+= "<tr><td>"+data.No+"</td>";
+					str+= "<td><img src=\""+data.Image+"\"></td>";
+					str+= "<td>"+data.Judul+"</td>";
+					str+= "<td>"+data.Tahun+"</td>";
+					str+= "<td>"+data.Rating+"</td>";
+					str+= "<td>"+data.Tanggal_Scrapping+"</td></tr>";
+				});
+                //tag tabel penutup
+                str+="</table>";
+                //Display semua headline ke html
+                $('#data_json').html(str);
+            });
+            
+        });
+        
+    </script>
+<div id="data_json"></div>
+<section class="py-sm-7 py-5 position-relative">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-12">
+
+          <div class="row">
+            <div class="col-md-3" align="center">
+              <table border='1' cellspacing='0' cellpadding='5' align='center'>
+                <tr align='center' bgcolor='#63b3ed'><td>Jumlah Data</td></tr>
+                <tr align='center'><td>100</td></tr>
+              </table>
+            </div>
+            <div class="col-md-3" align="center">
+              <table border='1' cellspacing='0' cellpadding='5' align='center'>
+                <tr align='center' bgcolor='#63b3ed'><td>Rating Terendah</td></tr>
+                <tr align='center'><td>8.2</td></tr>
+              </table>
+            </div>
+            <div class="col-md-3" align="center">
+              <table border='1' cellspacing='0' cellpadding='5' align='center'>
+                <tr align='center' bgcolor='#63b3ed'><td>Rating Tertinggi</td></tr>
+                <tr align='center'><td>9.2</td></tr>
+              </table>
+            </div>
+            <div class="col-md-3" align="center">
+              <table border='1' cellspacing='0' cellpadding='5' align='center'>
+                <tr align='center' bgcolor='#63b3ed'><td>Rating Rata-Rata</td></tr>
+                <tr align='center'><td>6.838</td></tr>
+              </table>
+            </div>
+          </div>
+          </br></br>
+          <div class="row">
+            <div class="col-md-6" align="center">
+              <div id="collumn_chart"></div>
+            </div>
+            <div class="col-md-6" align="center">
+              <div id="pie_chart"></div>
+            </div>
+          </div>
+          </br>
+          <div class="row">
+            <div class="col-md-6" align="center">
+              <div id="bar_chart"></div>
+            </div>
+            <div class="col-md-6" align="center">
+              <div id="line_chart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+   </div>
+ </section>
+	
+	<!-- CONTACT US -->
+	
+	
+	<!-- CONTACT ENDS -->
+	
+	<!-- FOOTER -->
+		<footer id="footer">
+			<div class="container">
+				<div class="row text-center">	
+					<p>
+						&copy; 2021 ASIX | DESIGN BY <a href="http://templatestock.co">Template Stock</a>
+						<span class="social">
+							<a href="#"><i class="fa fa-facebook-square"></i></a>
+							<a href="#"><i class="fa fa-twitter-square"></i></a> 
+							<a href="#"><i class="fa fa-google-plus-square"></i></a>
+						</span>
+					</p>
+				</div>
+			</div>		
+		</footer>
+	<!-- FOOTER ENDS -->	
+
+	
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+		<!-- SMOOTH SCROLL -->
+		<script src="js/smooth-scroll.min.js"></script>
+		<!-- PARALLAX IMG -->
+		<script src="js/jquery.parallax-1.1.3.js"></script>
+		<!-- SCROLL REVEAL -->
+		<script src="js/scrollReveal.min.js"></script>
+		<!-- FUNCTIONS -->
+		<script src="js/functions.js"></script>
+		<script src="js/popper.min.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</body>
+</html>
